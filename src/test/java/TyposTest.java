@@ -3,7 +3,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -12,7 +11,8 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.List;
 
-public class DropDownTest {
+public class TyposTest {
+
     WebDriver driver;
 
     @BeforeMethod
@@ -24,17 +24,19 @@ public class DropDownTest {
     }
 
     @Test
-    public void checkDropDown() {
-        driver.get("https://the-internet.herokuapp.com/dropdown");
-        WebElement dropDown = driver.findElement(By.id("dropdown"));
-        Select select = new Select(dropDown);
-        List<WebElement> options = select.getOptions();
-        Assert.assertEquals(options.get(0).getText(), "Please select an option");
-        Assert.assertEquals(options.get(1).getText(), "Option 1");
-        Assert.assertEquals(options.get(2).getText(), "Option 2");
+    public void typos() {
+        driver.get("https://the-internet.herokuapp.com/typos");
 
-        select.selectByVisibleText("Option 1");
-        Assert.assertTrue(select.getFirstSelectedOption().isSelected());
+        for (int i = 0; i < 10; i++) {
+            driver.navigate().refresh();
+
+            List<WebElement> elements = driver.findElements(By.tagName("p"));
+            String text = "";
+            for (WebElement element : elements) {
+                text = element.getText();
+            }
+            Assert.assertEquals(text, "Sometimes you'll see a typo, other times you won't.");
+        }
     }
 
     @AfterMethod(alwaysRun = true)
