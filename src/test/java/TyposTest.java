@@ -3,10 +3,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 import java.util.List;
@@ -31,11 +31,16 @@ public class TyposTest {
             driver.navigate().refresh();
 
             List<WebElement> elements = driver.findElements(By.tagName("p"));
+            SoftAssert softAssert = new SoftAssert();
+
             String text = "";
             for (WebElement element : elements) {
                 text = element.getText();
             }
-            Assert.assertEquals(text, "Sometimes you'll see a typo, other times you won't.");
+
+            softAssert.assertEquals(text, "Sometimes you'll see a typo, other times you won't.",
+                    "There's a mistake in won,t");
+            softAssert.assertAll();
         }
     }
 

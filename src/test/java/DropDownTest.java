@@ -4,10 +4,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 import java.util.List;
@@ -29,12 +29,15 @@ public class DropDownTest {
         WebElement dropDown = driver.findElement(By.id("dropdown"));
         Select select = new Select(dropDown);
         List<WebElement> options = select.getOptions();
-        Assert.assertEquals(options.get(0).getText(), "Please select an option");
-        Assert.assertEquals(options.get(1).getText(), "Option 1");
-        Assert.assertEquals(options.get(2).getText(), "Option 2");
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertEquals(options.get(0).getText(), "Please select an option", "No such option");
+        softAssert.assertEquals(options.get(1).getText(), "Option 1", "Wrong option");
+        softAssert.assertEquals(options.get(2).getText(), "Option 2", "Wrong option");
 
         select.selectByVisibleText("Option 1");
-        Assert.assertTrue(select.getFirstSelectedOption().isSelected());
+        softAssert.assertTrue(select.getFirstSelectedOption().isSelected());
+        softAssert.assertAll();
     }
 
     @AfterMethod(alwaysRun = true)
