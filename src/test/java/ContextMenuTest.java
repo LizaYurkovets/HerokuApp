@@ -3,12 +3,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
+
+import static org.testng.Assert.assertEquals;
 
 public class ContextMenuTest {
 
@@ -28,7 +28,8 @@ public class ContextMenuTest {
         Actions actions = new Actions(driver);
         actions.contextClick(driver.findElement(By.id("hot-spot"))).perform();
         String alertText = driver.switchTo().alert().getText();
-        Assert.assertEquals(alertText, "You selected a context menu");
+        assertEquals(alertText, "You selected a context menu");
+        driver.switchTo().alert().accept();
     }
 
     @AfterMethod(alwaysRun = true)
